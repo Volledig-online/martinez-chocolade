@@ -21,16 +21,28 @@ export interface Order {
   quantity: number;
   leveringswijze: Leveringswijze;
   route: Route;
+  orderDate: Date;
 }
 
-// Orders for today (smaller dataset)
-export const ordersVandaagData: Order[] = [
+// Helper function to create dates
+const today = new Date();
+const tomorrow = new Date(today);
+tomorrow.setDate(today.getDate() + 1);
+const dayAfterTomorrow = new Date(today);
+dayAfterTomorrow.setDate(today.getDate() + 2);
+const nextWeek = new Date(today);
+nextWeek.setDate(today.getDate() + 7);
+
+// Combined orders dataset with dates
+export const ordersData: Order[] = [
+  // Today's orders
   {
     id: '83648',
     name: 'Chocolaterie Amsterdam De Pijp',
     quantity: 12,
     leveringswijze: '32',
     route: 'PA',
+    orderDate: new Date(today),
   },
   {
     id: '15973',
@@ -38,6 +50,7 @@ export const ordersVandaagData: Order[] = [
     quantity: 17,
     leveringswijze: '100',
     route: 'PA',
+    orderDate: new Date(today),
   },
   {
     id: '94712',
@@ -45,6 +58,7 @@ export const ordersVandaagData: Order[] = [
     quantity: 1,
     leveringswijze: 'DDP',
     route: 'PA',
+    orderDate: new Date(today),
   },
   {
     id: '56239',
@@ -52,6 +66,7 @@ export const ordersVandaagData: Order[] = [
     quantity: 1,
     leveringswijze: '10',
     route: 'KA',
+    orderDate: new Date(today),
   },
   {
     id: '38476',
@@ -59,6 +74,7 @@ export const ordersVandaagData: Order[] = [
     quantity: 10,
     leveringswijze: '60',
     route: 'KA',
+    orderDate: new Date(today),
   },
   {
     id: '24689',
@@ -66,6 +82,7 @@ export const ordersVandaagData: Order[] = [
     quantity: 8,
     leveringswijze: 'EXW',
     route: 'KA',
+    orderDate: new Date(today),
   },
   {
     id: '11234',
@@ -73,6 +90,7 @@ export const ordersVandaagData: Order[] = [
     quantity: 3,
     leveringswijze: '70',
     route: 'KA',
+    orderDate: new Date(today),
   },
   {
     id: '71824',
@@ -80,17 +98,17 @@ export const ordersVandaagData: Order[] = [
     quantity: 3,
     leveringswijze: '10',
     route: 'KA',
+    orderDate: new Date(today),
   },
-];
 
-// Orders for future (larger dataset with scrolling)
-export const ordersToekomstData: Order[] = [
+  // Tomorrow's orders
   {
     id: '11235',
     name: 'Van Ekris Chocola',
     quantity: 3,
     leveringswijze: '60',
     route: 'KA',
+    orderDate: new Date(tomorrow),
   },
   {
     id: '99001',
@@ -98,6 +116,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 5,
     leveringswijze: 'CIF',
     route: 'MP',
+    orderDate: new Date(tomorrow),
   },
   {
     id: '99002',
@@ -105,6 +124,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 2,
     leveringswijze: 'EXW',
     route: 'KA',
+    orderDate: new Date(tomorrow),
   },
   {
     id: '99003',
@@ -112,6 +132,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 15,
     leveringswijze: 'DAP',
     route: 'PA',
+    orderDate: new Date(tomorrow),
   },
   {
     id: '99004',
@@ -119,21 +140,25 @@ export const ordersToekomstData: Order[] = [
     quantity: 7,
     leveringswijze: '70',
     route: 'KA',
+    orderDate: new Date(tomorrow),
   },
+
+  // Day after tomorrow's orders
   {
     id: '99005',
     name: 'Hotel Grand Plaza',
     quantity: 25,
     leveringswijze: '50',
     route: 'PA',
+    orderDate: new Date(dayAfterTomorrow),
   },
-  // Additional orders to create scrolling (22 more orders for total of 28)
   {
     id: '99006',
     name: 'Patisserie La Belle Époque',
     quantity: 8,
     leveringswijze: 'CPT',
     route: 'MP',
+    orderDate: new Date(dayAfterTomorrow),
   },
   {
     id: '99007',
@@ -141,6 +166,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 4,
     leveringswijze: '10',
     route: 'KA',
+    orderDate: new Date(dayAfterTomorrow),
   },
   {
     id: '99008',
@@ -148,6 +174,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 20,
     leveringswijze: 'FCA',
     route: 'PA',
+    orderDate: new Date(dayAfterTomorrow),
   },
   {
     id: '99009',
@@ -155,13 +182,17 @@ export const ordersToekomstData: Order[] = [
     quantity: 6,
     leveringswijze: '60',
     route: 'KA',
+    orderDate: new Date(dayAfterTomorrow),
   },
+
+  // Next week's orders
   {
     id: '99010',
     name: 'Confiserie Van Der Berg',
     quantity: 12,
     leveringswijze: '90',
     route: 'MP',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99011',
@@ -169,6 +200,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 3,
     leveringswijze: 'EXW',
     route: 'KA',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99012',
@@ -176,6 +208,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 18,
     leveringswijze: 'DDP',
     route: 'PA',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99013',
@@ -183,6 +216,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 9,
     leveringswijze: '70',
     route: 'KA',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99014',
@@ -190,6 +224,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 30,
     leveringswijze: '32',
     route: 'PA',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99015',
@@ -197,6 +232,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 5,
     leveringswijze: '10',
     route: 'KA',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99016',
@@ -204,6 +240,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 14,
     leveringswijze: 'CIF',
     route: 'MP',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99017',
@@ -211,6 +248,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 7,
     leveringswijze: '60',
     route: 'KA',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99018',
@@ -218,6 +256,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 22,
     leveringswijze: '100',
     route: 'PA',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99019',
@@ -225,6 +264,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 11,
     leveringswijze: 'DAP',
     route: 'MP',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99020',
@@ -232,6 +272,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 16,
     leveringswijze: '70',
     route: 'KA',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99021',
@@ -239,6 +280,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 13,
     leveringswijze: 'CIF',
     route: 'PA',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99022',
@@ -246,6 +288,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 4,
     leveringswijze: 'EXW',
     route: 'KA',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99023',
@@ -253,6 +296,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 28,
     leveringswijze: '50',
     route: 'PA',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99024',
@@ -260,6 +304,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 9,
     leveringswijze: '10',
     route: 'MP',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99025',
@@ -267,6 +312,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 19,
     leveringswijze: 'DAP',
     route: 'PA',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99026',
@@ -274,6 +320,7 @@ export const ordersToekomstData: Order[] = [
     quantity: 6,
     leveringswijze: '60',
     route: 'KA',
+    orderDate: new Date(nextWeek),
   },
   {
     id: '99027',
@@ -281,11 +328,68 @@ export const ordersToekomstData: Order[] = [
     quantity: 35,
     leveringswijze: '100',
     route: 'PA',
+    orderDate: new Date(nextWeek),
   },
 ];
 
-// Backward compatibility - defaults to today's orders
-export const ordersData: Order[] = ordersVandaagData;
+// Helper functions for date filtering
+export const isToday = (date: Date): boolean => {
+  const today = new Date();
+  return date.toDateString() === today.toDateString();
+};
+
+export const isFuture = (date: Date): boolean => {
+  const today = new Date();
+  return date > today;
+};
+
+export const getTodayOrders = (orders: Order[]): Order[] => {
+  return orders.filter(order => isToday(order.orderDate));
+};
+
+export const getFutureOrders = (orders: Order[]): Order[] => {
+  return orders.filter(order => isFuture(order.orderDate));
+};
+
+// Format date for future orders display
+export const formatOrderDate = (date: Date): string => {
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  const dayAfterTomorrow = new Date(today);
+  dayAfterTomorrow.setDate(today.getDate() + 2);
+
+  if (date.toDateString() === tomorrow.toDateString()) {
+    return 'Morgen';
+  }
+
+  if (date.toDateString() === dayAfterTomorrow.toDateString()) {
+    return 'Overmorgen';
+  }
+
+  // Format as "Wo 25 jun" or "Do 26 jun"
+  const days = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
+  const months = [
+    'jan',
+    'feb',
+    'mrt',
+    'apr',
+    'mei',
+    'jun',
+    'jul',
+    'aug',
+    'sep',
+    'okt',
+    'nov',
+    'dec',
+  ];
+
+  const dayName = days[date.getDay()];
+  const dayNumber = date.getDate();
+  const monthName = months[date.getMonth()];
+
+  return `${dayName} ${dayNumber} ${monthName}`;
+};
 
 // Business logic mappers
 export const getDeliveryIconFromLeveringswijze = (
@@ -327,11 +431,15 @@ export const fetchOrders = async (): Promise<Order[]> => {
 export const fetchOrdersVandaag = async (): Promise<Order[]> => {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 500));
-  return ordersVandaagData;
+  return getTodayOrders(ordersData);
 };
 
 export const fetchOrdersToekomst = async (): Promise<Order[]> => {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 500));
-  return ordersToekomstData;
+  return getFutureOrders(ordersData);
 };
+
+// Backward compatibility exports
+export const ordersVandaagData = getTodayOrders(ordersData);
+export const ordersToekomstData = getFutureOrders(ordersData);

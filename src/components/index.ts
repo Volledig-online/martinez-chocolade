@@ -1,2 +1,3 @@
 export { Icon, type IconName } from './Icon';
-export { default as OrderTable } from './OrderTable';
+export { default as TodayOrderTable } from './TodayOrderTable';
+export { default as FutureOrderTable } from './FutureOrderTable';

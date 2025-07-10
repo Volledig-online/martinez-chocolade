@@ -1,9 +1,12 @@
 import Logo from '@/components/Logo';
 import NumberBadge from '@/components/number-badge';
-import { OrderTable } from '@/components';
-import { ordersVandaagData, ordersToekomstData } from '@/data/orders';
+import { TodayOrderTable, FutureOrderTable } from '@/components';
+import { ordersData, getTodayOrders, getFutureOrders } from '@/data/orders';
 
 export default function Home() {
+  const todayOrders = getTodayOrders(ordersData);
+  const futureOrders = getFutureOrders(ordersData);
+
   return (
     <main className='h-screen overflow-hidden'>
       <div className='bg-primary absolute top-0 right-0 left-0 z-10 mx-auto flex h-[7.5rem] w-[7.5rem] items-center rounded-b-2xl'>
@@ -17,11 +20,11 @@ export default function Home() {
               <span className='text-sm leading-[1]'>In bewerking</span>
             </div>
             <div>
-              <NumberBadge number={3} />
+              <NumberBadge number={todayOrders.length} />
             </div>
           </div>
           <div className='min-h-0 flex-1 py-6'>
-            <OrderTable orders={ordersVandaagData} className='h-full' />
+            <TodayOrderTable orders={todayOrders} className='h-full' />
           </div>
           <div className='flex h-[6.5625rem] items-center gap-6'>
             <div>
@@ -41,13 +44,13 @@ export default function Home() {
               <h2 className='mb-1 text-xl leading-[1] font-bold'>Toekomst</h2>
             </div>
             <div>
-              <NumberBadge number={12} />
+              <NumberBadge number={futureOrders.length} />
             </div>
           </div>
           <div className='min-h-0 flex-1 py-6'>
-            <OrderTable
+            <FutureOrderTable
               hideFirstRowLabel
-              orders={ordersToekomstData}
+              orders={futureOrders}
               className='h-full'
             />
           </div>
