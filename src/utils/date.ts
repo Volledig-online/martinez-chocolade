@@ -68,15 +68,16 @@ export const createDateHelpers = () => {
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(today.getDate() + 1);
-  const dayAfterTomorrow = new Date(today);
-  dayAfterTomorrow.setDate(today.getDate() + 2);
-  const nextWeek = new Date(today);
-  nextWeek.setDate(today.getDate() + 7);
+
+  const getDaysAfterTomorrow = (days: number) => {
+    const date = new Date(today);
+    date.setDate(today.getDate() + days);
+    return date;
+  };
 
   return {
     today,
     tomorrow,
-    dayAfterTomorrow,
-    nextWeek,
+    getDaysAfterTomorrow,
   };
 };

@@ -2,7 +2,7 @@
  * API utility functions for order management
  */
 
-import type { Order } from '../data/orders';
+import type { Order } from '../types';
 import { ordersData } from '../data/orders';
 import { getTodayOrders, getFutureOrders } from './order-filters';
 

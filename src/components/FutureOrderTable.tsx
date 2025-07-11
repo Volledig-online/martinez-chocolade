@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Order } from '@/data/orders';
+import type { Order } from '@/types';
 import { formatOrderDate } from '@/utils';
 
 interface FutureOrderTableProps {

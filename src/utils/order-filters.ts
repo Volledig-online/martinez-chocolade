@@ -2,7 +2,7 @@
  * Order filtering utility functions
  */
 
-import type { Order } from '../data/orders';
+import type { Order } from '../types';
 import { isToday, isFuture } from './date';
 
 /**

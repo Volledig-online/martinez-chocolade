@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Icon } from './Icon';
-import { Order } from '@/data/orders';
+import type { Order } from '@/types';
 import {
   getDeliveryIconFromLeveringswijze,
   getStatusIconFromRoute,

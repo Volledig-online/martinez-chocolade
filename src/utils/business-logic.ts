@@ -2,7 +2,7 @@
  * Business logic utility functions for order management
  */
 
-import type { Leveringswijze, Route } from '../data/orders';
+import type { Leveringswijze, Route } from '../types';
 
 /**
  * Get delivery icon based on leveringswijze

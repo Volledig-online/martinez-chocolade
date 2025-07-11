@@ -1,34 +1,9 @@
 import { createDateHelpers } from '../utils';
 import { getTodayOrders, getFutureOrders } from '../utils/order-filters';
-
-// Business logic types
-export type Leveringswijze =
-  | '10'
-  | '60'
-  | '70'
-  | 'EXW'
-  | '32'
-  | '100'
-  | 'CIF'
-  | '90'
-  | 'CPT'
-  | 'DAP'
-  | 'DDP'
-  | 'FCA'
-  | '50';
-export type Route = 'PA' | 'KA' | 'MP';
-
-export interface Order {
-  id: string;
-  name: string;
-  quantity: number;
-  leveringswijze: Leveringswijze;
-  route: Route;
-  orderDate: Date;
-}
+import type { Order } from '../types';
 
 // Helper function to create dates
-const { today, tomorrow, dayAfterTomorrow, nextWeek } = createDateHelpers();
+const { today, tomorrow, getDaysAfterTomorrow } = createDateHelpers();
 
 // Combined orders dataset with dates
 export const ordersData: Order[] = [
@@ -147,7 +122,7 @@ export const ordersData: Order[] = [
     quantity: 25,
     leveringswijze: '50',
     route: 'PA',
-    orderDate: new Date(dayAfterTomorrow),
+    orderDate: new Date(getDaysAfterTomorrow(2)),
   },
   {
     id: '99006',
@@ -155,7 +130,7 @@ export const ordersData: Order[] = [
     quantity: 8,
     leveringswijze: 'CPT',
     route: 'MP',
-    orderDate: new Date(dayAfterTomorrow),
+    orderDate: new Date(getDaysAfterTomorrow(2)),
   },
   {
     id: '99007',
@@ -163,7 +138,7 @@ export const ordersData: Order[] = [
     quantity: 4,
     leveringswijze: '10',
     route: 'KA',
-    orderDate: new Date(dayAfterTomorrow),
+    orderDate: new Date(getDaysAfterTomorrow(2)),
   },
   {
     id: '99008',
@@ -171,7 +146,7 @@ export const ordersData: Order[] = [
     quantity: 20,
     leveringswijze: 'FCA',
     route: 'PA',
-    orderDate: new Date(dayAfterTomorrow),
+    orderDate: new Date(getDaysAfterTomorrow(3)),
   },
   {
     id: '99009',
@@ -179,7 +154,7 @@ export const ordersData: Order[] = [
     quantity: 6,
     leveringswijze: '60',
     route: 'KA',
-    orderDate: new Date(dayAfterTomorrow),
+    orderDate: new Date(getDaysAfterTomorrow(3)),
   },
 
   // Next week's orders
@@ -189,7 +164,7 @@ export const ordersData: Order[] = [
     quantity: 12,
     leveringswijze: '90',
     route: 'MP',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(4)),
   },
   {
     id: '99011',
@@ -197,7 +172,7 @@ export const ordersData: Order[] = [
     quantity: 3,
     leveringswijze: 'EXW',
     route: 'KA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(4)),
   },
   {
     id: '99012',
@@ -205,7 +180,7 @@ export const ordersData: Order[] = [
     quantity: 18,
     leveringswijze: 'DDP',
     route: 'PA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(4)),
   },
   {
     id: '99013',
@@ -213,7 +188,7 @@ export const ordersData: Order[] = [
     quantity: 9,
     leveringswijze: '70',
     route: 'KA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(5)),
   },
   {
     id: '99014',
@@ -221,7 +196,7 @@ export const ordersData: Order[] = [
     quantity: 30,
     leveringswijze: '32',
     route: 'PA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(5)),
   },
   {
     id: '99015',
@@ -229,7 +204,7 @@ export const ordersData: Order[] = [
     quantity: 5,
     leveringswijze: '10',
     route: 'KA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(5)),
   },
   {
     id: '99016',
@@ -237,7 +212,7 @@ export const ordersData: Order[] = [
     quantity: 14,
     leveringswijze: 'CIF',
     route: 'MP',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(6)),
   },
   {
     id: '99017',
@@ -245,7 +220,7 @@ export const ordersData: Order[] = [
     quantity: 7,
     leveringswijze: '60',
     route: 'KA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(6)),
   },
   {
     id: '99018',
@@ -253,7 +228,7 @@ export const ordersData: Order[] = [
     quantity: 22,
     leveringswijze: '100',
     route: 'PA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(6)),
   },
   {
     id: '99019',
@@ -261,7 +236,7 @@ export const ordersData: Order[] = [
     quantity: 11,
     leveringswijze: 'DAP',
     route: 'MP',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(6)),
   },
   {
     id: '99020',
@@ -269,7 +244,7 @@ export const ordersData: Order[] = [
     quantity: 16,
     leveringswijze: '70',
     route: 'KA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(6)),
   },
   {
     id: '99021',
@@ -277,7 +252,7 @@ export const ordersData: Order[] = [
     quantity: 13,
     leveringswijze: 'CIF',
     route: 'PA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(7)),
   },
   {
     id: '99022',
@@ -285,7 +260,7 @@ export const ordersData: Order[] = [
     quantity: 4,
     leveringswijze: 'EXW',
     route: 'KA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(7)),
   },
   {
     id: '99023',
@@ -293,7 +268,7 @@ export const ordersData: Order[] = [
     quantity: 28,
     leveringswijze: '50',
     route: 'PA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(7)),
   },
   {
     id: '99024',
@@ -301,7 +276,7 @@ export const ordersData: Order[] = [
     quantity: 9,
     leveringswijze: '10',
     route: 'MP',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(8)),
   },
   {
     id: '99025',
@@ -309,7 +284,7 @@ export const ordersData: Order[] = [
     quantity: 19,
     leveringswijze: 'DAP',
     route: 'PA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(8)),
   },
   {
     id: '99026',
@@ -317,7 +292,7 @@ export const ordersData: Order[] = [
     quantity: 6,
     leveringswijze: '60',
     route: 'KA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(9)),
   },
   {
     id: '99027',
@@ -325,13 +300,16 @@ export const ordersData: Order[] = [
     quantity: 35,
     leveringswijze: '100',
     route: 'PA',
-    orderDate: new Date(nextWeek),
+    orderDate: new Date(getDaysAfterTomorrow(10)),
   },
 ];
 
 // Backward compatibility exports
 export const ordersVandaagData = getTodayOrders(ordersData);
 export const ordersToekomstData = getFutureOrders(ordersData);
+
+// Re-export types for backward compatibility
+export type { Order, Leveringswijze, Route } from '../types';
 
 // Re-export utility functions for backward compatibility
 export {
