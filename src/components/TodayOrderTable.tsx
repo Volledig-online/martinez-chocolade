@@ -2,21 +2,19 @@
 
 import React from 'react';
 import { Icon } from './Icon';
+import { Order } from '@/data/orders';
 import {
-  Order,
   getDeliveryIconFromLeveringswijze,
   getStatusIconFromRoute,
-} from '@/data/orders';
+} from '@/utils';
 
 interface TodayOrderTableProps {
   orders: Order[];
-  hideFirstRowLabel?: boolean;
   className?: string;
 }
 
 const TodayOrderTable: React.FC<TodayOrderTableProps> = ({
   orders,
-  hideFirstRowLabel = false,
   className = '',
 }) => {
   const isFirstOrder = (index: number) => index === 0;
@@ -51,7 +49,7 @@ const TodayOrderTable: React.FC<TodayOrderTableProps> = ({
           >
             {/* Order ID */}
             <div className='flex flex-col justify-center font-medium text-gray-900'>
-              {!hideFirstRowLabel && isFirstOrder(index) && (
+              {isFirstOrder(index) && (
                 <div className='mb-0.5 text-xs leading-[1] text-gray-500'>
                   eerst volgende
                 </div>

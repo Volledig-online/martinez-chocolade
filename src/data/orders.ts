@@ -1,3 +1,6 @@
+import { createDateHelpers } from '../utils';
+import { getTodayOrders, getFutureOrders } from '../utils/order-filters';
+
 // Business logic types
 export type Leveringswijze =
   | '10'
@@ -25,13 +28,7 @@ export interface Order {
 }
 
 // Helper function to create dates
-const today = new Date();
-const tomorrow = new Date(today);
-tomorrow.setDate(today.getDate() + 1);
-const dayAfterTomorrow = new Date(today);
-dayAfterTomorrow.setDate(today.getDate() + 2);
-const nextWeek = new Date(today);
-nextWeek.setDate(today.getDate() + 7);
+const { today, tomorrow, dayAfterTomorrow, nextWeek } = createDateHelpers();
 
 // Combined orders dataset with dates
 export const ordersData: Order[] = [
@@ -332,114 +329,20 @@ export const ordersData: Order[] = [
   },
 ];
 
-// Helper functions for date filtering
-export const isToday = (date: Date): boolean => {
-  const today = new Date();
-  return date.toDateString() === today.toDateString();
-};
-
-export const isFuture = (date: Date): boolean => {
-  const today = new Date();
-  return date > today;
-};
-
-export const getTodayOrders = (orders: Order[]): Order[] => {
-  return orders.filter(order => isToday(order.orderDate));
-};
-
-export const getFutureOrders = (orders: Order[]): Order[] => {
-  return orders.filter(order => isFuture(order.orderDate));
-};
-
-// Format date for future orders display
-export const formatOrderDate = (date: Date): string => {
-  const today = new Date();
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
-  const dayAfterTomorrow = new Date(today);
-  dayAfterTomorrow.setDate(today.getDate() + 2);
-
-  if (date.toDateString() === tomorrow.toDateString()) {
-    return 'Morgen';
-  }
-
-  if (date.toDateString() === dayAfterTomorrow.toDateString()) {
-    return 'Overmorgen';
-  }
-
-  // Format as "Wo 25 jun" or "Do 26 jun"
-  const days = ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'];
-  const months = [
-    'jan',
-    'feb',
-    'mrt',
-    'apr',
-    'mei',
-    'jun',
-    'jul',
-    'aug',
-    'sep',
-    'okt',
-    'nov',
-    'dec',
-  ];
-
-  const dayName = days[date.getDay()];
-  const dayNumber = date.getDate();
-  const monthName = months[date.getMonth()];
-
-  return `${dayName} ${dayNumber} ${monthName}`;
-};
-
-// Business logic mappers
-export const getDeliveryIconFromLeveringswijze = (
-  leveringswijze: Leveringswijze
-): 'bus' | 'delivery-man' => {
-  // Afhalen = delivery-man: 10, 60, 70, EXW
-  const afhalenCodes: Leveringswijze[] = ['10', '60', '70', 'EXW'];
-
-  if (afhalenCodes.includes(leveringswijze)) {
-    return 'delivery-man';
-  }
-
-  // Transport = bus: 32, 100, CIF, 90, CPT, DAP, DDP, FCA, 50
-  return 'bus';
-};
-
-export const getStatusIconFromRoute = (
-  route: Route
-): 'pallet-full' | 'pallet-half' | 'trolley' => {
-  switch (route) {
-    case 'PA': // Pallet (icoontje pallet met 2 dozen)
-      return 'pallet-full';
-    case 'KA': // Kar (icoontje steekwagen)
-      return 'trolley';
-    case 'MP': // Minipallet (icoontje pallet met 1 doos)
-      return 'pallet-half';
-    default:
-      return 'pallet-full';
-  }
-};
-
-// Functions to simulate fetching data
-export const fetchOrders = async (): Promise<Order[]> => {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return ordersData;
-};
-
-export const fetchOrdersVandaag = async (): Promise<Order[]> => {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return getTodayOrders(ordersData);
-};
-
-export const fetchOrdersToekomst = async (): Promise<Order[]> => {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return getFutureOrders(ordersData);
-};
-
 // Backward compatibility exports
 export const ordersVandaagData = getTodayOrders(ordersData);
 export const ordersToekomstData = getFutureOrders(ordersData);
+
+// Re-export utility functions for backward compatibility
+export {
+  isToday,
+  isFuture,
+  formatOrderDate,
+  getDeliveryIconFromLeveringswijze,
+  getStatusIconFromRoute,
+  fetchOrders,
+  fetchOrdersVandaag,
+  fetchOrdersToekomst,
+  getTodayOrders,
+  getFutureOrders,
+} from '../utils';

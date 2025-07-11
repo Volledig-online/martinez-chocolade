@@ -1,7 +1,10 @@
 import Logo from '@/components/Logo';
 import NumberBadge from '@/components/number-badge';
 import { TodayOrderTable, FutureOrderTable } from '@/components';
-import { ordersData, getTodayOrders, getFutureOrders } from '@/data/orders';
+import { ordersData } from '@/data/orders';
+import { getTodayOrders, getFutureOrders } from '@/utils';
+
+export const dynamic = 'force-dynamic';
 
 export default function Home() {
   const todayOrders = getTodayOrders(ordersData);

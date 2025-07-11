@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Order, formatOrderDate } from '@/data/orders';
+import { Order } from '@/data/orders';
+import { formatOrderDate } from '@/utils';
 
 interface FutureOrderTableProps {
   orders: Order[];
@@ -11,10 +12,8 @@ interface FutureOrderTableProps {
 
 const FutureOrderTable: React.FC<FutureOrderTableProps> = ({
   orders,
-  hideFirstRowLabel = false,
   className = '',
 }) => {
-  const isFirstOrder = (index: number) => index === 0;
   const isLastOrder = (index: number) => index === orders.length - 1;
   const isEvenOrder = (index: number) => index % 2 === 0;
 
@@ -41,11 +40,6 @@ const FutureOrderTable: React.FC<FutureOrderTableProps> = ({
           >
             {/* Order ID */}
             <div className='flex flex-col justify-center font-medium text-gray-900'>
-              {!hideFirstRowLabel && isFirstOrder(index) && (
-                <div className='mb-0.5 text-xs leading-[1] text-gray-500'>
-                  eerst volgende
-                </div>
-              )}
               <div className='leading-[1]'>{order.id}</div>
             </div>
 
