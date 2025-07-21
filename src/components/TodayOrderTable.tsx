@@ -77,7 +77,7 @@ const TodayOrderTable: React.FC<TodayOrderTableProps> = ({
             {/* Status Icon */}
             <div className='flex w-6 justify-center'>
               <Icon
-                name={getStatusIconFromRoute(order.route)}
+                name={getStatusIconFromRoute(order.route || 'PA')}
                 size={40}
                 color='#000000'
               />

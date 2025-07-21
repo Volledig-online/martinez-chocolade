@@ -5,35 +5,49 @@
 /**
  * Check if a date is today
  */
-export const isToday = (date: Date): boolean => {
+export const isToday = (date: Date | string): boolean => {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  if (isNaN(dateObj.getTime())) return false;
+
   const today = new Date();
-  return date.toDateString() === today.toDateString();
+  return dateObj.toDateString() === today.toDateString();
 };
 
 /**
  * Check if a date is in the future
  */
-export const isFuture = (date: Date): boolean => {
+export const isFuture = (date: Date | string): boolean => {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  if (isNaN(dateObj.getTime())) return false;
+
   const today = new Date();
-  return date > today;
+  return dateObj > today;
 };
 
 /**
  * Format date for future orders display
  * Returns "Morgen", "Overmorgen", or "Wo 25 jun" format
  */
-export const formatOrderDate = (date: Date): string => {
+export const formatOrderDate = (date: Date | string): string => {
+  // Ensure date is a Date object
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+
+  // Check if date is valid
+  if (isNaN(dateObj.getTime())) {
+    return 'Ongeldige datum';
+  }
+
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(today.getDate() + 1);
   const dayAfterTomorrow = new Date(today);
   dayAfterTomorrow.setDate(today.getDate() + 2);
 
-  if (date.toDateString() === tomorrow.toDateString()) {
+  if (dateObj.toDateString() === tomorrow.toDateString()) {
     return 'Morgen';
   }
 
-  if (date.toDateString() === dayAfterTomorrow.toDateString()) {
+  if (dateObj.toDateString() === dayAfterTomorrow.toDateString()) {
     return 'Overmorgen';
   }
 
@@ -54,11 +68,12 @@ export const formatOrderDate = (date: Date): string => {
     'dec',
   ];
 
-  const dayName = days[date.getDay()];
-  const dayNumber = date.getDate();
-  const monthName = months[date.getMonth()];
+  const dayName = days[dateObj.getDay()];
+  const dayNumber = dateObj.getDate();
+  const monthName = months[dateObj.getMonth()];
+  const year = dateObj.getFullYear().toString().slice(-2);
 
-  return `${dayName} ${dayNumber} ${monthName}`;
+  return `${dayName} ${dayNumber} ${monthName} ${year}`;
 };
 
 /**
