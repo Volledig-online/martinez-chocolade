@@ -54,7 +54,6 @@ export async function getDebugStats(): Promise<DebugStats> {
     // Get all orders with New or empty WMS_Status
     const result = await dbPool.request().query<DatabaseOrder>(`
         SELECT * FROM [dbo].[_AB_OrderRegel_View]
-        WHERE ([WMS_Status] = 'New' OR [WMS_Status] = '' OR [WMS_Status] IS NULL)
         ORDER BY [Leverdatum] ASC, [Ordernummer] ASC
       `);
 

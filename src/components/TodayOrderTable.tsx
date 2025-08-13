@@ -67,7 +67,6 @@ const TodayOrderTable: React.FC<TodayOrderTableProps> = ({
 
             {/* Delivery Type Icon */}
             <div className='flex w-6 justify-center'>
-              {order.leveringswijze}
               <Icon
                 name={getDeliveryIconFromLeveringswijze(order.leveringswijze)}
                 size={40}

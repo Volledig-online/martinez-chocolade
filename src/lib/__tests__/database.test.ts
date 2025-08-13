@@ -48,7 +48,7 @@ describe('adjustOrderDateByLeveringswijze', () => {
 
     test.each(twoDayCodes)('should subtract 2 days for code "%s"', code => {
       const result = adjustOrderDateByLeveringswijze(baseDate, code);
-      const expected = new Date('2025-07-20T10:00:00.000Z'); // Saturday, July 20, 2025
+      const expected = new Date('2025-07-18T10:00:00.000Z'); // Friday, July 18, 2025 (weekend rollback)
 
       expect(result).toEqual(expected);
       expect(result.getTime()).toBe(expected.getTime());
@@ -56,14 +56,14 @@ describe('adjustOrderDateByLeveringswijze', () => {
 
     test('should handle code "100" with trailing spaces', () => {
       const result = adjustOrderDateByLeveringswijze(baseDate, '100  ');
-      const expected = new Date('2025-07-20T10:00:00.000Z');
+      const expected = new Date('2025-07-18T10:00:00.000Z');
 
       expect(result).toEqual(expected);
     });
 
     test('should handle code "CIF" with mixed spaces', () => {
       const result = adjustOrderDateByLeveringswijze(baseDate, ' CIF ');
-      const expected = new Date('2025-07-20T10:00:00.000Z');
+      const expected = new Date('2025-07-18T10:00:00.000Z');
 
       expect(result).toEqual(expected);
     });

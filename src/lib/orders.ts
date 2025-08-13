@@ -13,11 +13,11 @@ import { DatabaseOrder, Order } from '@/types/order';
 export async function getAllOrders(): Promise<Order[]> {
   return executeQuery(
     async dbPool => {
-      const result = await dbPool
-        .request()
-        .query<DatabaseOrder>(
-          'SELECT * FROM [dbo].[_AB_OrderRegel_View] ORDER BY [Leverdatum] ASC, [Ordernummer] ASC'
-        );
+      const result = await dbPool.request().query<DatabaseOrder>(
+        `SELECT * FROM [dbo].[_AB_OrderRegel_View]
+          WHERE RTRIM(LTRIM([Magazijncode])) IN ('MART','ROU','REL')
+          ORDER BY [Leverdatum] ASC, [Ordernummer] ASC`
+      );
 
       return result.recordset.map(mapDatabaseOrderToOrder);
     },
@@ -51,8 +51,9 @@ export async function getTodayOrders(): Promise<Order[]> {
         .input('endDate', sql.DateTime, threeDaysFromNow).query<DatabaseOrder>(`
         SELECT * FROM [dbo].[_AB_OrderRegel_View]
         WHERE [Leverdatum] >= @startDate AND [Leverdatum] < @endDate
+        AND RTRIM(LTRIM([Magazijncode])) IN ('MART','ROU','REL')
         AND ([WMS_Status] = 'Sent to file')
-        AND ([handTerminal] = null or [handTerminal] = '')
+        AND ([handTerminal] IS NULL OR [handTerminal] = '')
         ORDER BY [Ordernummer] ASC
       `);
 
@@ -97,7 +98,8 @@ export async function getFutureOrders(): Promise<Order[]> {
         .query<DatabaseOrder>(`
         SELECT * FROM [dbo].[_AB_OrderRegel_View]
         WHERE [Leverdatum] >= @startDate AND [Leverdatum] <= @endDate
-        AND ([WMS_Status] = 'Send to file')
+        AND RTRIM(LTRIM([Magazijncode])) IN ('MART','ROU','REL')
+        AND ([WMS_Status] = 'Sent to file')
         ORDER BY [Leverdatum] ASC, [Ordernummer] ASC
       `);
 
@@ -133,6 +135,7 @@ export async function getOrdersByDateRange(
         .input('endDate', sql.DateTime, endDate).query<DatabaseOrder>(`
         SELECT * FROM [dbo].[_AB_OrderRegel_View]
         WHERE [Leverdatum] >= @startDate AND [Leverdatum] <= @endDate
+        AND RTRIM(LTRIM([Magazijncode])) IN ('MART','ROU','REL')
         ORDER BY [Leverdatum] ASC, [Ordernummer] ASC
       `);
 
