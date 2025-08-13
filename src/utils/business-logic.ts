@@ -12,10 +12,13 @@ import type { Leveringswijze, Route } from '../types';
 export const getDeliveryIconFromLeveringswijze = (
   leveringswijze: Leveringswijze
 ): 'bus' | 'delivery-man' => {
-  // Afhalen = delivery-man: 10, 60, 70, EXW
-  const afhalenCodes: Leveringswijze[] = ['10', '60', '70', 'EXW'];
+  // Trim whitespace from leveringswijze to handle database padding
+  const trimmedLeveringswijze = leveringswijze.trim();
 
-  if (afhalenCodes.includes(leveringswijze)) {
+  // Afhalen = delivery-man: 10, 60, 70, EXW
+  const afhalenCodes = ['10', '60', '70', 'EXW'];
+
+  if (afhalenCodes.includes(trimmedLeveringswijze)) {
     return 'delivery-man';
   }
 

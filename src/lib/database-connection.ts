@@ -40,7 +40,8 @@ async function createConnection(): Promise<sql.ConnectionPool> {
  */
 export async function executeQuery<T>(
   queryFn: (pool: sql.ConnectionPool) => Promise<T>,
-  retries = 2
+  retries = 2,
+  debugLabel?: string
 ): Promise<T> {
   let lastError: Error;
 
@@ -50,6 +51,36 @@ export async function executeQuery<T>(
     try {
       connection = await createConnection();
       const result = await queryFn(connection);
+
+      // Debug logging for order queries
+      if (debugLabel && process.env.NODE_ENV === 'development') {
+        console.log(`[DEBUG] ${debugLabel}:`, {
+          timestamp: new Date().toISOString(),
+          resultCount: Array.isArray(result) ? result.length : 'N/A',
+          attempt: attempt + 1,
+        });
+
+        // Log order statuses if result contains orders
+        if (
+          Array.isArray(result) &&
+          result.length > 0 &&
+          'wmsStatus' in result[0]
+        ) {
+          const statusCounts = result.reduce(
+            (acc: Record<string, number>, order: { wmsStatus?: string }) => {
+              const status = order.wmsStatus || 'Empty';
+              acc[status] = (acc[status] || 0) + 1;
+              return acc;
+            },
+            {}
+          );
+          console.log(
+            `[DEBUG] ${debugLabel} - Status breakdown:`,
+            statusCounts
+          );
+        }
+      }
+
       await connection.close();
       return result;
     } catch (error) {

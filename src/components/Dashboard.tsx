@@ -80,12 +80,22 @@ const Dashboard: React.FC = () => {
           Laatst bijgewerkt: {lastUpdated.toLocaleTimeString('nl-NL')}
         </div>
       )}
+      {/* Debug link */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className='absolute top-4 right-4 z-20'>
+          <a
+            href='/debug'
+            className='text-xs text-blue-600 underline hover:text-blue-800'
+          >
+            Debug Statistieken
+          </a>
+        </div>
+      )}
       <div className='flex h-full items-stretch gap-8 p-8'>
         <div className='flex flex-1 flex-col'>
           <div className='flex h-[6.5625rem] items-center gap-6'>
             <div>
               <h2 className='mb-1 text-xl leading-[1] font-bold'>Vandaag</h2>
-              <span className='text-sm leading-[1]'>In bewerking</span>
             </div>
             <div>
               <NumberBadge number={data.todayOrders.length} />
@@ -99,7 +109,6 @@ const Dashboard: React.FC = () => {
               <h2 className='mb-1 text-xl leading-[1] font-bold'>
                 Terug gemeld
               </h2>
-              <span className='text-sm leading-[1]'>Status 4</span>
             </div>
             <div>
               <NumberBadge number={data.readBackCount} />
