@@ -36,10 +36,10 @@ export async function getTodayOrders(): Promise<Order[]> {
       today.setHours(0, 0, 0, 0);
 
       // We need to fetch orders from a wider date range to account for business rule adjustments
-      // Orders up to 3 days in the future might belong to today after adjustment
+      // Orders up to 4 days in the future might belong to today after adjustment
       // Orders from the past might also belong to today (if they were originally scheduled for future dates)
-      const threeDaysFromNow = new Date(today);
-      threeDaysFromNow.setDate(today.getDate() + 3);
+      const FiveDaysFromNow = new Date(today);
+      FiveDaysFromNow.setDate(today.getDate() + 5);
 
       // Start from a few days ago to catch orders that might have been adjusted backwards
       const threeDaysAgo = new Date(today);
@@ -48,7 +48,7 @@ export async function getTodayOrders(): Promise<Order[]> {
       const result = await dbPool
         .request()
         .input('startDate', sql.DateTime, threeDaysAgo)
-        .input('endDate', sql.DateTime, threeDaysFromNow).query<DatabaseOrder>(`
+        .input('endDate', sql.DateTime, FiveDaysFromNow).query<DatabaseOrder>(`
         SELECT * FROM [dbo].[_AB_OrderRegel_View]
         WHERE [Leverdatum] >= @startDate AND [Leverdatum] < @endDate
         AND RTRIM(LTRIM([Magazijncode])) IN ('MART','ROU','REL')
