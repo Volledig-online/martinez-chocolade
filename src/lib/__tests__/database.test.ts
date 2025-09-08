@@ -182,6 +182,17 @@ describe('adjustOrderDateByLeveringswijze', () => {
   });
 
   describe('Business rule integration scenarios', () => {
+    const fixedNow = new Date('2025-09-08T00:00:00.000Z'); // Monday
+
+    beforeAll(() => {
+      jest.useFakeTimers();
+      jest.setSystemTime(fixedNow);
+    });
+
+    afterAll(() => {
+      jest.useRealTimers();
+    });
+
     test('should correctly categorize orders that move from future to today', () => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -224,10 +235,19 @@ describe('adjustOrderDateByLeveringswijze', () => {
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
 
-      // But with leveringswijze "100" (2-day subtraction), it should become yesterday
+      // With leveringswijze "100" (2 business-day subtraction), result may skip weekend; yesterday expectation only holds on Tue/Wed/Thu. We'll compute expected based on business days.
       const adjustedDate = adjustOrderDateByLeveringswijze(tomorrow, '100');
 
-      expect(adjustedDate.toDateString()).toBe(yesterday.toDateString());
+      // Expected: today minus 1 business day (because tomorrow - 2 business days)
+      const expected = new Date(today);
+      let remaining = 1;
+      while (remaining > 0) {
+        expected.setDate(expected.getDate() - 1);
+        const d = expected.getDay();
+        if (d !== 0 && d !== 6) remaining -= 1;
+      }
+
+      expect(adjustedDate.toDateString()).toBe(expected.toDateString());
     });
 
     test('should handle orders that appear in the past but belong to today', () => {

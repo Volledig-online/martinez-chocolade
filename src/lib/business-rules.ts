@@ -5,8 +5,8 @@
 
 /**
  * Adjust order date based on leveringswijze business rules
- * - Codes 10, 60, 70, EXW: subtract 1 day
- * - Codes 32, 100, CIF, 90, CPT, DAP, DDP, FCA, 50: subtract 2 days
+ * - Codes 10, 60, 70, EXW: subtract 1 business day (skip weekends)
+ * - Codes 32, 100, CIF, 90, CPT, DAP, DDP, FCA, 50: subtract 2 business days (skip weekends)
  * - Other codes: no adjustment
  */
 export function adjustOrderDateByLeveringswijze(
@@ -34,27 +34,22 @@ export function adjustOrderDateByLeveringswijze(
     '50',
   ];
 
-  // Apply base adjustment by leveringswijze
-  let didAdjust = false;
-  if (oneDayCodes.includes(code)) {
-    adjustedDate.setDate(adjustedDate.getDate() - 1);
-    didAdjust = true;
-  } else if (twoDayCodes.includes(code)) {
-    adjustedDate.setDate(adjustedDate.getDate() - 2);
-    didAdjust = true;
-  }
-
-  // If we adjusted and the resulting date falls on a weekend, roll back to Friday
-  // getDay(): 0 = Sunday, 6 = Saturday
-  if (didAdjust) {
-    const day = adjustedDate.getDay();
-    if (day === 6) {
-      // Saturday -> move back 1 day to Friday
-      adjustedDate.setDate(adjustedDate.getDate() - 1);
-    } else if (day === 0) {
-      // Sunday -> move back 2 days to Friday
-      adjustedDate.setDate(adjustedDate.getDate() - 2);
+  // Helper to subtract N business days (Mon-Fri), skipping Sat/Sun
+  const subtractBusinessDays = (date: Date, days: number) => {
+    let remaining = days;
+    while (remaining > 0) {
+      date.setDate(date.getDate() - 1);
+      const day = date.getDay(); // 0=Sun, 6=Sat
+      if (day !== 0 && day !== 6) {
+        remaining -= 1;
+      }
     }
+  };
+
+  if (oneDayCodes.includes(code)) {
+    subtractBusinessDays(adjustedDate, 1);
+  } else if (twoDayCodes.includes(code)) {
+    subtractBusinessDays(adjustedDate, 2);
   }
 
   return adjustedDate;
